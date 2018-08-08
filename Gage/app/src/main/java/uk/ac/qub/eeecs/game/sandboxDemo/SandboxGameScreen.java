@@ -8,6 +8,7 @@ import uk.ac.qub.eeecs.gage.Game;
 import uk.ac.qub.eeecs.gage.engine.AssetStore;
 import uk.ac.qub.eeecs.gage.engine.ElapsedTime;
 import uk.ac.qub.eeecs.gage.engine.graphics.IGraphics2D;
+import uk.ac.qub.eeecs.gage.engine.input.TouchEvent;
 import uk.ac.qub.eeecs.gage.util.GraphicsHelper;
 import uk.ac.qub.eeecs.gage.world.GameObject;
 import uk.ac.qub.eeecs.gage.world.GameScreen;
@@ -33,6 +34,7 @@ public class SandboxGameScreen extends GameScreen {
 
         AssetStore assetManager = mGame.getAssetManager();
         assetManager.loadAndAddBitmap("SleepingCat", CatState.CAT_SLEEPING.getBitmapPath());
+        assetManager.loadAndAddBitmap("AwakeCat", CatState.CAT_AWAKE.getBitmapPath());
         assetManager.loadAndAddBitmap("Snore", "img/z.png");
 
         mCat = new Cat(100, 100, assetManager.getBitmap("SleepingCat"), this);
@@ -44,6 +46,17 @@ public class SandboxGameScreen extends GameScreen {
 
     @Override
     public void update(ElapsedTime elapsedTime) {
+
+        if (mGame.getInput().getTouchEvents().size() > 0) {
+            if (mGame.getInput().getTouchEvents().get(0).type == TouchEvent.TOUCH_DOWN) {
+                if (mCat.getState() == CatState.CAT_SLEEPING) {
+                    if (Math.random() < 0.15) {
+                        mCat.wakeUp();
+                    }
+                }
+            }
+        }
+
         if (mCat.getState() == CatState.CAT_SLEEPING) {
             if (elapsedTime.totalTime >= lastSnoreTime + snorePeriod) {
                 if (mSnores.size() >= 3) {

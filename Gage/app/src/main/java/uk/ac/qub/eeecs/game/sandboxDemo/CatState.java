@@ -2,7 +2,7 @@ package uk.ac.qub.eeecs.game.sandboxDemo;
 
 public enum CatState {
     CAT_SLEEPING("img/Sleeping Cat.png"),
-    CAT_AWAKE("img/Sleeping Cat.png");
+    CAT_AWAKE("img/Awake Cat.png");
 
     private String mBitmapPath;
 

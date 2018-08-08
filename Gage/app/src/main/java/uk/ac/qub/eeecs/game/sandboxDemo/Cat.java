@@ -18,4 +18,12 @@ public class Cat extends GameObject {
         return mCatState;
     }
 
+    public void wakeUp() {
+        mCatState = CatState.CAT_AWAKE;
+        Bitmap awakeBitmap = mGameScreen.getGame().getAssetManager().getBitmap("AwakeCat");
+        if (awakeBitmap != null) {
+            mBitmap = awakeBitmap;
+        }
+    }
+
 }
