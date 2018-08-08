@@ -14,6 +14,7 @@ import uk.ac.qub.eeecs.gage.engine.input.Input;
 import uk.ac.qub.eeecs.gage.engine.input.TouchEvent;
 import uk.ac.qub.eeecs.gage.world.GameScreen;
 import uk.ac.qub.eeecs.game.platformDemo.CollisionDemoGameScreen;
+import uk.ac.qub.eeecs.game.sandboxDemo.SandboxGameScreen;
 import uk.ac.qub.eeecs.game.spaceDemo.SteeringDemoGameScreen;
 
 /**
@@ -28,6 +29,7 @@ public class MenuScreen extends GameScreen {
 	 */
 	private Rect mSpaceShipDemoBound;
 	private Rect mPlatformDemoBound;
+	private Rect mSandboxBound;
 
 	/**
 	 * Create a simple menu screen
@@ -42,16 +44,18 @@ public class MenuScreen extends GameScreen {
 		AssetStore assetManager = mGame.getAssetManager();
 		assetManager.loadAndAddBitmap("SpaceshipIcon", "img/Spaceship1.png");
 		assetManager.loadAndAddBitmap("PlatformIcon", "img/Platform.png");
+		assetManager.loadAndAddBitmap("PlayIcon", "img/play.jpg");
 
 		// Load in the demo icons
 		assetManager.loadAndAddBitmap("AlphaBlendingIcon", "img/demos/alphaBlending/Icon.png");
 		assetManager.loadAndAddBitmap("GraphicsManipulationIcon", "img/demos/graphicsManipulation/Icon.png");
 
 		// Define the rects what will be used to 'hold' the images
-		int spacingX = game.getScreenWidth() / 6;
+		int spacingX = game.getScreenWidth() / 7;
 		int spacingY = game.getScreenHeight() / 3;
 		mSpaceShipDemoBound = new Rect(spacingX, spacingY, 2 * spacingX, 2 * spacingY);
-		mPlatformDemoBound = new Rect(4 * spacingX, spacingY, 5 * spacingX, 2 * spacingY);
+		mPlatformDemoBound = new Rect(3 * spacingX, spacingY, 4 * spacingX, 2 * spacingY);
+		mSandboxBound = new Rect(5 * spacingX, spacingY, 6 * spacingX, 2 * spacingY);
 	}
 
 	/*
@@ -93,6 +97,16 @@ public class MenuScreen extends GameScreen {
 				mGame.getScreenManager().addScreen(collisionDemoGameScreen);
 
 			}
+
+			else if (mSandboxBound.contains((int) touchEvent.x,
+					(int) touchEvent.y)) {
+				// If the play game area has been touched then swap screens
+				mGame.getScreenManager().removeScreen(this.getName());
+				SandboxGameScreen sandboxGameScreen = new SandboxGameScreen(mGame);
+				// As it's the only added screen it will become active.
+				mGame.getScreenManager().addScreen(sandboxGameScreen);
+
+			}
 		}
 	}
 
@@ -109,9 +123,11 @@ public class MenuScreen extends GameScreen {
 		// Get and draw the bitmaps into the defined rectangles
 		Bitmap playSpaceShipGame = mGame.getAssetManager().getBitmap("SpaceshipIcon");
 		Bitmap playPlatformGame = mGame.getAssetManager().getBitmap("PlatformIcon");
+		Bitmap playSandboxGame = mGame.getAssetManager().getBitmap("PlayIcon");
 
 		graphics2D.clear(Color.WHITE);
 		graphics2D.drawBitmap(playSpaceShipGame, null, mSpaceShipDemoBound,null);
 		graphics2D.drawBitmap(playPlatformGame, null, mPlatformDemoBound, null);
+		graphics2D.drawBitmap(playSandboxGame, null, mSandboxBound, null);
 	}
 }
