@@ -50,14 +50,8 @@ public class SandboxGameScreen extends GameScreen {
 
         if (mGame.getInput().getTouchEvents().size() > 0) {
             if (mGame.getInput().getTouchEvents().get(0).type == TouchEvent.TOUCH_DOWN) {
-                if (mBumpAnimation == null) {
-                    mBumpAnimation = new BumpAnimation(elapsedTime, mLayerViewport, this);
-                }
-                if (mCat.getState() == CatState.CAT_SLEEPING) {
-                    if (Math.random() < 0.15) {
-                        mCat.wakeUp();
-                    }
-                }
+                startBumpAnimation(elapsedTime);
+                mCat.nudgeCat();
             }
         }
 
@@ -75,6 +69,7 @@ public class SandboxGameScreen extends GameScreen {
                 lastSnoreTime = elapsedTime.totalTime;
             }
         }
+
         for (GameObject Snore : mSnores) {
             Snore.position.y += 1.0;
             double random = Math.random();
@@ -82,6 +77,8 @@ public class SandboxGameScreen extends GameScreen {
             random -= 3.0;
             Snore.position.x += random;
         }
+
+        mCat.update(elapsedTime);
     }
 
     @Override
@@ -89,6 +86,12 @@ public class SandboxGameScreen extends GameScreen {
         mCat.draw(elapsedTime, graphics2D, mLayerViewport, mScreenViewport);
         for (GameObject Snore : mSnores) {
             Snore.draw(elapsedTime, graphics2D, mLayerViewport, mScreenViewport);
+        }
+    }
+
+    public void startBumpAnimation(ElapsedTime elapsedTime) {
+        if (mBumpAnimation == null) {
+            mBumpAnimation = new BumpAnimation(elapsedTime, mLayerViewport, this);
         }
     }
 

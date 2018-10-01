@@ -2,6 +2,8 @@ package uk.ac.qub.eeecs.game.platformDemo;
 
 import android.graphics.Color;
 
+import junit.framework.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,7 +68,7 @@ public class CollisionDemoGameScreen extends GameScreen {
 	 * @param game
 	 *            Game to which this screen belongs
 	 */
-	public CollisionDemoGameScreen(Game game) {
+	public CollisionDemoGameScreen(Game game, ElapsedTime elapsedTime) {
 		super("CollisionDemoGameScreen", game);
 
 		// Create the view ports
@@ -82,24 +84,29 @@ public class CollisionDemoGameScreen extends GameScreen {
 		assetManager.loadAndAddBitmap("LeftArrow", "img/LeftArrow.png");
 		assetManager.loadAndAddBitmap("UpArrow", "img/UpArrow.png");
 
+		assetManager.loadAndAddBitmap("TestAnim1", "img/TestAnim1.png");
+		assetManager.loadAndAddBitmap("TestAnim2", "img/TestAnim2.png");
+		assetManager.loadAndAddBitmap("TestAnim3", "img/TestAnim3.png");
+		assetManager.loadAndAddBitmap("TestAnim4", "img/TestAnim4.png");
+
 		// Create the touch controls
 		int screenWidth = game.getScreenWidth();
 		int screenHeight = game.getScreenHeight();
 
 		moveLeft = new SimpleControl(
-				100.0f, (screenHeight - 100.0f), 100.0f, 100.0f, "LeftArrow", this);
+				200.0f, (screenHeight - 200.0f), 200.0f, 200.0f, "LeftArrow", this);
 		mControls.add(moveLeft);
 
 		moveRight = new SimpleControl(
-				225.0f, (screenHeight - 100.0f), 100.0f, 100.0f, "RightArrow", this);
+				400.0f, (screenHeight - 200.0f), 200.0f, 200.0f, "RightArrow", this);
 		mControls.add(moveRight);
 
 		jumpUp = new SimpleControl(
-				(screenWidth - 125.0f), (screenHeight - 100.0f), 100.0f, 100.0f, "UpArrow", this);
+				(screenWidth - 200.0f), (screenHeight - 200.0f), 200.0f, 200.0f, "UpArrow", this);
 		mControls.add(jumpUp);
 
 		// Create the player
-		mPlayer = new PlayerSphere(100.0f, 100.0f, this);
+		mPlayer = new PlayerSphere(100.0f, 100.0f, this, elapsedTime);
 
 		// Create the platforms
 		int platformWidth = 70;

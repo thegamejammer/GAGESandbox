@@ -1,5 +1,9 @@
 package uk.ac.qub.eeecs.game.platformDemo;
 
+import junit.framework.Test;
+
+import java.util.ArrayList;
+
 import uk.ac.qub.eeecs.gage.engine.ElapsedTime;
 import uk.ac.qub.eeecs.gage.util.CollisionDetector;
 import uk.ac.qub.eeecs.gage.util.CollisionDetector.CollisionType;
@@ -27,7 +31,7 @@ public class PlayerSphere extends Sprite {
 	 * Acceleration with which the player can move along
 	 * the x-axis
 	 */
-	private float RUN_ACCELERATION = 150.0f;
+	private float RUN_ACCELERATION = 750.0f;
 	
 	/**
 	 * Maximum velocity of the player along the x-axis
@@ -38,19 +42,14 @@ public class PlayerSphere extends Sprite {
 	 * Scale factor that is applied to the x-velocity when
 	 * the player is not moving left or right
 	 */
-	private float RUN_DECAY = 0.95f;
+	private float RUN_DECAY = 0.5f;
 
 	/**
 	 * Instantaneous velocity with which the player jumps up
 	 */
 	private float JUMP_VELOCITY = 450.0f;
-	
-	/**
-	 * Scale factor that is used to turn the x-velocity into
-	 * an angular velocity to give the visual appearance
-	 * that the sphere is rotating as the player moves.
-	 */
-	private float ANGULAR_VELOCITY_SCALE = 1.5f;
+
+	private AnimationController mAnimationController;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -66,9 +65,17 @@ public class PlayerSphere extends Sprite {
 	 * @param gameScreen
 	 *            Gamescreen to which sphere belongs
 	 */
-	public PlayerSphere(float startX, float startY, GameScreen gameScreen) {
+	public PlayerSphere(float startX, float startY, GameScreen gameScreen, ElapsedTime elapsedTime) {
 		super(startX, startY, 50.0f, 50.0f, gameScreen.getGame()
 				.getAssetManager().getBitmap("Ball"), gameScreen);
+
+		ArrayList<AnimationFrame> TestAnimation = new ArrayList<>();
+		TestAnimation.add(new AnimationFrame("TestAnim1", 1.0f));
+		TestAnimation.add(new AnimationFrame("TestAnim2", 1.0f));
+		TestAnimation.add(new AnimationFrame("TestAnim3", 1.0f));
+		TestAnimation.add(new AnimationFrame("TestAnim4", 1.0f));
+
+		mAnimationController = new AnimationController(this, elapsedTime, TestAnimation);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -114,11 +121,6 @@ public class PlayerSphere extends Sprite {
 			velocity.y = JUMP_VELOCITY;
 		}
 
-		// We want the player's sphere to rotate to give the appearance
-		// that the sphere is rolling as the player moves. The faster
-		// the player is moving the faster the angular velocity.
-		angularVelocity = ANGULAR_VELOCITY_SCALE * velocity.x;
-
 		// Call the sprite's update method to apply the defined 
 		// accelerations and velocities to provide a new position
 		// and orientation.
@@ -132,7 +134,9 @@ public class PlayerSphere extends Sprite {
 		// Check that our new position has not collided by one of the
 		// defined platforms. If so, then removing any overlap and
 		// ensure a valid velocity.
-		checkForAndResolveCollisions(platforms);		
+		checkForAndResolveCollisions(platforms);
+
+		mAnimationController.update(elapsedTime);
 	}
 
 	/**

@@ -143,6 +143,14 @@ public class GameObject {
 		return mBitmap;
 	}
 
+	public void setBitmap(Bitmap bitmap) {
+		mBitmap = bitmap;
+	}
+
+	public void setBitmapResource(String resource) {
+		mBitmap = mGameScreen.getGame().getAssetManager().getBitmap(resource);
+	}
+
 	/**
 	 * Set the position of the game object
 	 * 

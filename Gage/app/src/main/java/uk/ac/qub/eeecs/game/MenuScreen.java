@@ -92,7 +92,7 @@ public class MenuScreen extends GameScreen {
 					(int) touchEvent.y)) {
 				// If the play game area has been touched then swap screens
 				mGame.getScreenManager().removeScreen(this.getName());
-				CollisionDemoGameScreen collisionDemoGameScreen = new CollisionDemoGameScreen(mGame);
+				CollisionDemoGameScreen collisionDemoGameScreen = new CollisionDemoGameScreen(mGame, elapsedTime);
 				// As it's the only added screen it will become active.
 				mGame.getScreenManager().addScreen(collisionDemoGameScreen);
 
